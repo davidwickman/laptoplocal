@@ -1,0 +1,90 @@
+#!/bin/sh
+
+## get from App Store
+#brew cask install --appdir="/Applications" evernote
+#brew cask install --appdir="/Applications" wunderlist
+
+# Core Functionality
+fancy_echo "Install Core Apps ..."
+brew cask install --appdir="/Applications" adobe-creative-cloud
+brew cask install --appdir="/Applications" alfred
+brew cask install --appdir="/Applications" bettertouchtool
+brew cask install --appdir="/Applications" dropbox
+brew cask install --appdir="/Applications" firefox
+brew cask install --appdir="/Applications" google-chrome
+brew cask install --appdir="/Applications" microsoft-lync
+brew cask install --appdir="/Applications" skype
+brew cask install --appdir="/Applications" slack
+brew cask install --appdir="/Applications" spotify
+brew cask install --appdir="/Applications" spotify-notifications
+brew cask install --appdir="/Applications" transmit
+brew cask install --appdir="/Applications" vlc
+
+# Development
+fancy_echo "Install Dev Apps ..."
+brew cask install --appdir="/Applications" dash
+brew cask install --appdir="/Applications" github
+brew cask install --appdir="/Applications" sourcetree
+brew cask install --appdir="/Applications" sublime-text
+brew cask install --appdir="/Applications" vagrant
+brew cask install --appdir="/Applications" virtualbox
+
+# Global Frontend NPM Packages
+fancy_echo "Install Frontend NPM Packages Globally ..."
+npm i -g npm browser-sync grunt gulp node-sass protractor uncss webpack yarn
+
+# Link Cask Apps to Alfred
+brew cask alfred link
+
+# cleanup
+brew cleanup --force
+rm -f -r /Library/Caches/Homebrew/*
+
+fancy_echo "Security: https://objective-see.com/products.html"
+
+# Development-friendly macOS settings
+# Hand-picked from https://mths.be/osx
+fancy_echo "Setup Development-Friendly macOS Settings ..."
+
+# Disable press-and-hold for keys in favor of key repeat
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+
+# Disable smart quotes as they’re annoying when typing code
+defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
+
+# Disable smart dashes as they’re annoying when typing code
+defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
+
+# Enable the Develop menu and the Web Inspector in Safari
+defaults write com.apple.Safari IncludeDevelopMenu -bool true
+defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
+defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true
+
+# Show the full URL in Safari's address bar (note: this still hides the scheme)
+defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
+
+# Reveal IP address, hostname, OS version, etc. when clicking the clock in the login window
+sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
+
+# Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)
+defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
+
+# Enable subpixel font rendering on non-Apple LCDs
+defaults write NSGlobalDomain AppleFontSmoothing -int 2
+
+# Finder: show all filename extensions
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
+# Display full POSIX path as Finder window title
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
+
+# Avoid creating .DS_Store files on network volumes
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+
+# Add iOS Simulator to Launchpad
+sudo ln -sf "/Applications/Xcode.app/Contents/Developer/Applications/iOS Simulator.app" "/Applications/iOS Simulator.app"
+
+# Only use UTF-8 in Terminal.app
+defaults write com.apple.terminal StringEncodings -array 4
+
+fancy_echo "You'll need to restart your computer before all iOS settings can take effect."
